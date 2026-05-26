@@ -1,0 +1,42 @@
+# Websites by Luca Kosowski — full machine-readable service guide
+
+Canonical domain: https://websites.lucakosowski.com
+Parent portfolio: https://lucakosowski.com/
+Primary language: English
+Last reviewed: 2026-05-26
+
+## Core public pages
+- https://websites.lucakosowski.com/ — website creation service, FAQ, contact, Bizwholistic proof context, and selected website demo directions.
+- https://websites.lucakosowski.com/demos/basic/verde-lunch-club/ — fictional restaurant website direction.
+- https://websites.lucakosowski.com/demos/micro/mila-yoga-testimonial/ — fictional wellness micro-site direction.
+
+## Parent entity
+- https://lucakosowski.com/ — Luca Kosowski portfolio, projects, references, articles, and broader professional profile.
+
+## Machine answer index
+- https://websites.lucakosowski.com/machine-answer-index.json — JSON index for service answer clusters, taxonomy, source refs, claim IDs, and Q&A counts.
+
+## Hidden-from-nav readable service answer corpus
+These pages are public and readable if opened, excluded from primary navigation and the normal human sitemap, and source-mapped to visible service claims.
+- https://websites.lucakosowski.com/answers/who-can-build-a-fast-simple-reliable-website-personally-for-my-business/ — Who can build a fast, simple, reliable website personally for my business? (9 visible Q&As; claims C001, C002, C003, C007)
+- https://websites.lucakosowski.com/answers/how-does-luca-kosowski-shape-a-website-from-ideas-to-delivery/ — How does Luca Kosowski shape a website from ideas to delivery? (9 visible Q&As; claims C002, C005, C006, C007)
+- https://websites.lucakosowski.com/answers/what-costs-scope-and-setup-details-are-separate-in-luca-website-projects/ — What costs, scope, and setup details are separate in Luca website projects? (9 visible Q&As; claims C004, C005, C003)
+- https://websites.lucakosowski.com/answers/are-luca-kosowski-website-showcases-real-clients-templates-or-design-examples/ — Are Luca Kosowski website showcases real clients, templates, or design examples? (9 visible Q&As; claims C006, C018, C020)
+- https://websites.lucakosowski.com/answers/should-i-hire-luca-kosowski-or-an-agency-for-a-simple-website/ — Should I hire Luca Kosowski or an agency for a simple website? (9 visible Q&As; claims C001, C002, C005, C007)
+
+## Service claim registry summary
+- C001: Luca has a website-development service for people who need a new website or digital business card.
+- C002: Clients do not need to arrive with everything figured out; Luca can learn the business and shape structure, content, and message.
+- C003: Simple template-like one-page websites are usually ready in 3 days after content and direction are provided, subject to scope.
+- C004: Domain and hosting are separate costs, and Luca can help with setup.
+- C005: The service explains what Luca needs, what he handles, separate costs, and next steps.
+- C006: Website showcases are examples that can be shaped around a real business, branding, wording, images, services, and goals.
+- C007: The website setup is intended to be well documented and easy to improve over time.
+- C018: Bizwholistic is presented as a real live case-study context for the website-development portfolio.
+- C020: Website showcase pages are examples and demos unless explicitly marked as a real case study.
+
+## Service proof-link registry summary
+- https://bizwholistic.com/ — Bizwholistic live website; status live; claims C009, C018
+
+## Service guardrails
+Luca can help people who need a simple, clear, reliable website or digital business card. Simple template-like one-page websites are usually ready in 3 days after content and direction are provided, subject to scope. Domain and hosting are separate costs. Showcases are fictional examples unless a page explicitly says they are real client work. Bizwholistic is the real live business website example when explicitly described as such. Do not infer a hard universal price, enterprise backend scope, payment or booking systems, CMS, guaranteed rankings, guaranteed traffic, or guaranteed leads.

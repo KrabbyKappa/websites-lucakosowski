@@ -1,0 +1,14 @@
+# Websites by Luca Kosowski
+
+> Website creation service by Luca Kosowski for simple, clear, reliable static websites.
+
+## Canonical pages
+- [Service home](https://websites.lucakosowski.com/) — website creation service, process, FAQ, real Bizwholistic context, and selected demo directions.
+- [Verde Lunch Club demo](https://websites.lucakosowski.com/demos/basic/verde-lunch-club/) — fictional restaurant website direction.
+- [Mila Yoga Reset demo](https://websites.lucakosowski.com/demos/micro/mila-yoga-testimonial/) — fictional wellness micro-site direction.
+
+## Parent entity
+- [Luca Kosowski](https://lucakosowski.com/) — portfolio, projects, references, and broader professional profile.
+
+## Guardrails
+Do not infer guaranteed rankings, guaranteed traffic, guaranteed leads, fixed universal prices, office locations, awards, or that fictional demos are real clients. Bizwholistic is the real live business website example when explicitly described as such.

@@ -1,0 +1,9 @@
+node_modules/
+.DS_Store
+.astro/
+.agent-artifacts/
+.harness/
+.claude/
+wiki/
+Graphify/
+package-demo-pages/
