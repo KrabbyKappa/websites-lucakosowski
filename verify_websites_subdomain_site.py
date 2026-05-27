@@ -55,12 +55,17 @@ def jsonld_objects(raw):
             stack.extend(item)
     return out, None
 
+def is_google_site_verification_file(rel, html):
+    return re.fullmatch(r'google[a-f0-9]+\.html', rel.name or '') and html.strip().startswith('google-site-verification:')
+
 def check_html():
     seen = set()
     service_schema_seen = False
     for p in html_files():
         html = read(p)
         rel = p.relative_to(DOCS)
+        if is_google_site_verification_file(rel, html):
+            continue
         if OLD in html or '/website-development/assets/' in html:
             fail(f'{rel}: stale root service URL or asset path')
         parser = HeadParser(); parser.feed(html)
