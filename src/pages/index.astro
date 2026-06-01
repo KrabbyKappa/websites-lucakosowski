@@ -548,7 +548,8 @@ const cylinderItems = [
       const start = (event) => {
         if (event.button !== 0) return;
         const isTouchPointer = event.pointerType === 'touch';
-        if (!isTouchPointer) event.preventDefault();
+        // Do not cancel desktop pointerdown: finished cards are anchors, and
+        // cancelling pointerdown can suppress their default navigation.
         holdAutoplayBriefly();
         hideDragHint();
         const hadWheelMotion = Math.abs(magnetAngularVelocity) > 0.03 || Math.abs(targetAngle - currentAngle) > 0.25;
@@ -581,7 +582,8 @@ const cylinderItems = [
         dragGrabOffsetX = event.clientX - dragStartCenterX;
 
         if (!isTouchPointer) {
-          view?.setPointerCapture?.(event.pointerId);
+          // Keep simple clicks on finished preview anchors targetable; window-level
+          // move/up listeners already maintain desktop drag tracking without capture.
           view?.classList.add('is-dragging');
         }
       };
