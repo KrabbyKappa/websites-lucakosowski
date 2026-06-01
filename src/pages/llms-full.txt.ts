@@ -17,10 +17,11 @@ export function GET() {
 Canonical domain: https://websites.lucakosowski.com
 Parent portfolio: https://lucakosowski.com/
 Primary language: English
-Last reviewed: 2026-05-26
+Last reviewed: 2026-06-01
 
 ## Core public pages
 - https://websites.lucakosowski.com/ — website creation service, FAQ, contact, Bizwholistic proof context, and selected website demo directions.
+- https://websites.lucakosowski.com/approach/ — plain-language approach page showing how a website direction is shaped around real Bizwholistic preview screens.
 - https://websites.lucakosowski.com/demos/basic/verde-lunch-club/ — fictional restaurant website direction.
 - https://websites.lucakosowski.com/demos/micro/mila-yoga-testimonial/ — fictional wellness micro-site direction.
 

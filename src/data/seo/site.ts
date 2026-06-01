@@ -33,6 +33,13 @@ export const seoRoutes: SeoRouteRecord[] = [
     language: 'en',
   },
   {
+    path: '/approach/',
+    title: 'Approach – Websites by Luca Kosowski',
+    description: 'Luca Kosowski\'s website approach: understand the business, shape visible screens, keep scope clear, and handle follow-up changes safely.',
+    family: 'service',
+    language: 'en',
+  },
+  {
     path: '/demos/basic/atlas-family-foundation/',
     title: 'Foundation Website Demo – Atlas Family Foundation',
     description: 'Fictional foundation website demo showing grants, community proof, reporting rhythm, and a calm static site direction.',

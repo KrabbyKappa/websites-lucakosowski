@@ -4,6 +4,7 @@
 
 ## Canonical pages
 - [Service home](https://websites.lucakosowski.com/) — website creation service, process, FAQ, real Bizwholistic context, and selected demo directions.
+- [Approach](https://websites.lucakosowski.com/approach/) — plain-language approach page showing how a website direction is shaped around real Bizwholistic preview screens.
 - [Verde Lunch Club demo](https://websites.lucakosowski.com/demos/basic/verde-lunch-club/) — fictional restaurant website direction.
 - [Mila Yoga Reset demo](https://websites.lucakosowski.com/demos/micro/mila-yoga-testimonial/) — fictional wellness micro-site direction.
 

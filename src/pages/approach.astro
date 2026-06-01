@@ -1,0 +1,195 @@
+---
+import ServiceLayout from '../layouts/ServiceLayout.astro';
+
+const methodProofNodes = [
+  {
+    key: 'home',
+    step: 'Clear opening',
+    detail: 'The first screen states the promise, audience, and tone without making people work.',
+    image: '/assets/approach-bizwholistic/bizwholistic-home-first-fold.jpg',
+    alt: 'Bizwholistic homepage screenshot showing the first impression, logo, headline, and opening content.',
+  },
+  {
+    key: 'context',
+    step: 'Brand-specific voice',
+    detail: 'Copy sounds written for this firm, not dropped into a theme.',
+    image: '/assets/approach-bizwholistic/bizwholistic-about-context.jpg',
+    alt: 'Bizwholistic about page screenshot showing business context and brand rhythm.',
+  },
+  {
+    key: 'structure',
+    step: 'Calm page structure',
+    detail: 'Offers, tools, and next steps sit in the right places so the site feels dependable.',
+    image: '/assets/approach-bizwholistic/bizwholistic-offer-structure.jpg',
+    alt: 'Bizwholistic services screenshot showing organized business-support content and page structure.',
+  },
+  {
+    key: 'interview',
+    step: 'Interview content',
+    detail: 'Press material gets its own polished page, with spacing and hierarchy that respect the source.',
+    image: '/assets/approach-bizwholistic/bizwholistic-interview-press.jpg',
+    alt: 'Bizwholistic press and interviews page screenshot showing interview content.',
+  },
+  {
+    key: 'graphics',
+    step: 'Handcrafted SVGs',
+    detail: 'Custom globe and compass line art make the About page feel drawn for the brand.',
+    image: '/assets/approach-bizwholistic/bizwholistic-about-svg-elements.jpg',
+    alt: 'Bizwholistic About page screenshot showing handcrafted globe and compass SVG illustrations.',
+  },
+  {
+    key: 'mobile',
+    step: 'Phone-ready finish',
+    detail: 'The same message stays sharp, readable, and composed on narrow screens.',
+    image: '/assets/approach-bizwholistic/bizwholistic-home-mobile.jpg',
+    alt: 'Bizwholistic mobile screenshot showing the same website direction in a narrow viewport.',
+  },
+];
+---
+<ServiceLayout
+  title="Approach – Websites by Luca Kosowski"
+  description="Luca Kosowski's website approach: understand the business, shape visible screens, keep scope clear, and handle follow-up changes without unsupported promises."
+  canonicalPath="/approach/"
+  ogTitle="Approach – Websites by Luca Kosowski"
+  ogDescription="A plain-language approach page for shaping a clean, reliable website around real Bizwholistic proof screens."
+>
+  <link rel="stylesheet" href="/approach.css">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="showcase-topbar showcase-topbar--static" aria-label="Website approach navigation">
+    <a href="https://lucakosowski.com/" class="identity">Luca Kosowski</a>
+    <nav aria-label="Approach page links">
+      <a href="/">Home</a>
+      <a href="#approach-contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main" class="approach-wheel-method" tabindex="-1">
+    <section class="approach-method-field" aria-labelledby="approach-title">
+      <div class="approach-method-copy">
+        <h1 id="approach-title">A premium website should feel clear</h1>
+      </div>
+
+      <div class="approach-object-wrap" data-biz-field data-active-biz={methodProofNodes[0].key}>
+        <div class="approach-wheel-object" role="region" aria-label="Bizwholistic screenshots linked to the website approach">
+          <div class="approach-wheel-orbit" aria-hidden="true"></div>
+          <div class="approach-preview-stack" aria-label="Bizwholistic screenshots linked to the explanation points">
+            {methodProofNodes.map((item, index) => (
+              <figure
+                id={`approach-shot-${item.key}`}
+                class="approach-preview-plane"
+                data-biz-item={item.key}
+                data-active={index === 0 ? 'true' : 'false'}
+                aria-describedby={`approach-callout-${item.key}`}
+                aria-hidden={index === 0 ? 'false' : 'true'}
+              >
+                <img src={item.image} width={item.key === 'mobile' ? '390' : '1440'} height={item.key === 'mobile' ? '844' : '980'} alt={item.alt} loading={index === 0 ? 'eager' : 'lazy'} fetchpriority={index === 0 ? 'high' : undefined} decoding="async" />
+              </figure>
+            ))}
+          </div>
+        </div>
+
+        <ol class="approach-callouts" aria-label="Explanation points linked to the proof screenshots">
+          {methodProofNodes.map((item, index) => (
+            <li class={`approach-callout-shell approach-callout--${item.key}`}>
+              <button
+                id={`approach-callout-${item.key}`}
+                class="approach-callout"
+                type="button"
+                data-biz-item={item.key}
+                aria-controls={`approach-shot-${item.key} approach-panel-${item.key}`}
+                aria-pressed={index === 0 ? 'true' : 'false'}
+                aria-expanded="false"
+              >
+                <strong>{item.step}</strong>
+                <p>{item.detail}</p>
+              </button>
+              <div
+                id={`approach-panel-${item.key}`}
+                class="approach-callout-panel"
+                data-biz-panel={item.key}
+                data-active="false"
+                aria-hidden="true"
+                role="region"
+                aria-labelledby={`approach-callout-${item.key}`}
+              >
+                <div class="approach-callout-panel__inner">
+                  <p>{item.detail}</p>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section id="approach-contact" class="scope-note decision-note approach-contact-home" aria-labelledby="approach-contact-title">
+      <p class="eyebrow">Direct inquiry</p>
+      <h2 id="approach-contact-title">Contact information</h2>
+      <p>For collaborations or inquiries, please use the contact information below or send me a message.</p>
+      <div class="decision-grid" aria-label="Contact methods">
+        <article>
+          <strong>Email</strong>
+          <span><a href="mailto:hello@lucakosowski.com">hello@lucakosowski.com</a></span>
+        </article>
+
+        <article>
+          <strong>LinkedIn</strong>
+          <span><a href="https://www.linkedin.com/in/luca-kosowski/" target="_blank" rel="noopener noreferrer">linkedin.com/in/luca-kosowski</a></span>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script is:inline>
+    (() => {
+      const field = document.querySelector('[data-biz-field]');
+      if (!field) return;
+
+      const buttons = Array.from(field.querySelectorAll('.approach-callout[data-biz-item]'));
+      const planes = Array.from(field.querySelectorAll('.approach-preview-plane[data-biz-item]'));
+      const panels = Array.from(field.querySelectorAll('.approach-callout-panel[data-biz-panel]'));
+      const mobileQuery = window.matchMedia('(max-width: 780px)');
+
+      const setExpanded = (key = '') => {
+        field.dataset.expandedBiz = key;
+        buttons.forEach((button) => button.setAttribute('aria-expanded', String(button.dataset.bizItem === key)));
+        panels.forEach((panel) => {
+          const isExpanded = panel.dataset.bizPanel === key;
+          panel.dataset.active = String(isExpanded);
+          panel.setAttribute('aria-hidden', String(!isExpanded));
+        });
+      };
+
+      const setActive = (key, force = false) => {
+        if (!key || (!force && field.dataset.activeBiz === key)) return;
+        field.dataset.activeBiz = key;
+        buttons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.bizItem === key)));
+        planes.forEach((plane) => {
+          const isActive = plane.dataset.bizItem === key;
+          plane.dataset.active = String(isActive);
+          plane.setAttribute('aria-hidden', String(!isActive));
+        });
+      };
+
+      buttons.forEach((button) => {
+        const key = button.dataset.bizItem;
+        button.addEventListener('pointerenter', () => {
+          if (!mobileQuery.matches) setActive(key);
+        }, { passive: true });
+        button.addEventListener('focus', () => setActive(key));
+        button.addEventListener('click', () => {
+          if (!mobileQuery.matches) {
+            setActive(key);
+            return;
+          }
+          setActive(key);
+          setExpanded(field.dataset.expandedBiz === key ? '' : key);
+        });
+      });
+
+      setActive(field.dataset.activeBiz || buttons[0]?.dataset.bizItem, true);
+      setExpanded('');
+    })();
+  </script>
+</ServiceLayout>
