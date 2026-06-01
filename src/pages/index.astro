@@ -86,7 +86,7 @@ const cylinderItems = [
                   <>
                     <picture>
                       <source media="(max-width: 720px)" srcset={item.mobileImage} width="390" height="844" />
-                      <Image src={item.image} width={1440} height={980} alt={isFinished ? `${item.name} website preview` : ''} loading="eager" decoding="async" fetchpriority={index < 3 ? 'high' : 'auto'} aria-hidden={isFinished ? undefined : 'true'} />
+                      <Image src={item.image} width={1440} height={980} alt={isFinished ? `${item.name} website preview` : ''} loading="eager" decoding="async" fetchpriority={index < 3 ? 'high' : 'auto'} draggable="false" aria-hidden={isFinished ? undefined : 'true'} />
                     </picture>
                     <span class="cylinder-item__shade" aria-hidden="true"></span>
                     <span class="cylinder-item__sr-meta">{item.name}: {item.summary}</span>
@@ -102,6 +102,7 @@ const cylinderItems = [
                     href={item.href}
                     target={item.external ? '_blank' : undefined}
                     rel={item.external ? 'noopener noreferrer' : undefined}
+                    draggable="false"
                     style={`--cylinder-angle: ${angle}deg; --cylinder-image: url('${item.image}'); --cylinder-mobile-image: url('${item.mobileImage}');`}
                   >
                     {content}
@@ -617,7 +618,11 @@ const cylinderItems = [
         const now = performance.now();
         const dragDistance = deltaX;
         const elapsed = Math.max(8, now - lastDragTime);
-        dragMoved = dragMoved || Math.abs(dragDistance) > DRAG_CLICK_THRESHOLD_PX;
+        const crossedDragThreshold = Math.abs(dragDistance) > DRAG_CLICK_THRESHOLD_PX;
+        if (!dragMoved && crossedDragThreshold && event.pointerType !== 'touch') {
+          view?.setPointerCapture?.(event.pointerId);
+        }
+        dragMoved = dragMoved || crossedDragThreshold;
         const dragDegreesPerPx = window.innerWidth < 720 ? MOBILE_DRAG_DEGREES_PER_PX : DRAG_DEGREES_PER_PX;
         dragAngularVelocity = ((event.clientX - lastDragX) * dragDegreesPerPx / elapsed) * 16.67;
         const grabbedTargetX = event.clientX - dragGrabOffsetX;
@@ -664,6 +669,9 @@ const cylinderItems = [
           event.preventDefault();
           event.stopPropagation();
         }
+      }, true);
+      stage.addEventListener('dragstart', (event) => {
+        event.preventDefault();
       }, true);
       stage.addEventListener('keydown', (event) => {
         if (event.key === 'ArrowLeft') {
