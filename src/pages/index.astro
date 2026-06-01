@@ -63,6 +63,7 @@ const cylinderItems = [
   <header class="showcase-topbar" data-materialized-header aria-label="Website development navigation">
     <a href="https://lucakosowski.com/" class="identity">Luca Kosowski</a>
     <nav aria-label="Website development sections">
+      <a href="/approach/">Approach</a>
       <a href="#service-faq">FAQ</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -138,7 +139,15 @@ const cylinderItems = [
               <span class="service-faq-toggle" aria-hidden="true">+</span>
             </summary>
             <div class="service-faq-answer">
-              <p>{item.answer}</p>
+              <p>
+                {item.answer}
+                {item.link && (
+                  <>
+                    {' '}
+                    <a href={item.link.href}>{item.link.label}</a>
+                  </>
+                )}
+              </p>
             </div>
           </details>
         ))}

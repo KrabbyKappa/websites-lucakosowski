@@ -1,6 +1,10 @@
 export interface ServiceFaqItem {
   question: string;
   answer: string;
+  link?: {
+    href: string;
+    label: string;
+  };
 }
 
 export const serviceFaq: ServiceFaqItem[] = [
@@ -15,6 +19,14 @@ export const serviceFaq: ServiceFaqItem[] = [
   {
     question: 'How do we shape the website?',
     answer: 'We decide the style, pages, and features together, then estimate the cost based on the complexity needed.',
+  },
+  {
+    question: 'Can I see more about how the website is crafted?',
+    answer: 'Yes. If you want a deeper look at the thinking behind the work, the Approach page walks through how I shape the first direction, choose what the page needs to prove, and refine the site around real screens.',
+    link: {
+      href: '/approach/',
+      label: 'Read the Approach page.',
+    },
   },
   {
     question: 'What happens after the direction is agreed?',
