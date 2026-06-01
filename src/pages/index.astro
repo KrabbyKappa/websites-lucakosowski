@@ -665,6 +665,12 @@ const cylinderItems = [
       window.addEventListener('pointerup', end);
       window.addEventListener('pointercancel', end);
       stage.addEventListener('click', (event) => {
+        const clickedFinishedCard = event.target.closest?.('a.cylinder-item--finished');
+        if (clickedFinishedCard && !clickedFinishedCard.classList.contains('is-active')) {
+          event.preventDefault();
+          event.stopPropagation();
+          return;
+        }
         if (performance.now() < suppressClickUntil) {
           event.preventDefault();
           event.stopPropagation();
