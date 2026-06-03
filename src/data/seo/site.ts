@@ -5,11 +5,8 @@ export const seoSite = {
   defaultImage: '/assets/site-previews/website-development-showcase-og.jpg',
   description: 'Website creation service by Luca Kosowski for simple, clear, reliable static websites for small businesses, professionals, creators, and founders.',
   parentPortfolio: 'https://lucakosowski.com',
-  sameAs: [
-    'https://lucakosowski.com/',
-    'https://medium.com/@KappaK',
-    'https://www.youtube.com/@krabbykappa',
-  ],
+  // Keep Person.sameAs limited to live, on-brand profile URLs. Article URLs stay in proofLinks instead.
+  sameAs: ['https://lucakosowski.com/'],
 } as const;
 
 export type RouteFamily = 'service' | 'demo' | 'answer';
@@ -36,6 +33,13 @@ export const seoRoutes: SeoRouteRecord[] = [
     path: '/approach/',
     title: 'Approach – Websites by Luca Kosowski',
     description: 'Luca Kosowski\'s website approach: understand the business, shape visible screens, keep scope clear, and handle follow-up changes safely.',
+    family: 'service',
+    language: 'en',
+  },
+  {
+    path: '/contact/',
+    title: 'Contact Websites by Luca Kosowski',
+    description: 'Contact Luca Kosowski directly for simple, clear, reliable website inquiries. Email or LinkedIn; no form required.',
     family: 'service',
     language: 'en',
   },

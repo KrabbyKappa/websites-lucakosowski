@@ -713,6 +713,28 @@ p {
   margin-bottom: 0;
 }
 
+.contact-route {
+  width: min(100% - 2rem, var(--stage-width));
+  margin-inline: auto;
+  padding-top: clamp(6.5rem, 13vw, 10rem);
+}
+
+.contact-page-card {
+  width: 100%;
+  margin-inline: auto;
+  margin-bottom: clamp(1.4rem, 4vw, 2.5rem);
+  min-height: auto;
+  padding: clamp(1.35rem, 4vw, 2.7rem);
+}
+
+.contact-page-card--quiet {
+  --card-glass: linear-gradient(145deg, rgba(255,255,255,0.18), rgba(247,239,225,0.16));
+}
+
+.contact-method-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .decision-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

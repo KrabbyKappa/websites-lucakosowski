@@ -7,8 +7,24 @@ ROOT = Path(__file__).resolve().parent
 DOCS = ROOT / 'docs'
 SITE = 'https://websites.lucakosowski.com'
 OLD = 'https://lucakosowski.com/website-development'
+PERSON_ID = 'https://lucakosowski.com/#person'
+EXPECTED_PERSON_SAME_AS = ['https://lucakosowski.com/']
 GOATCOUNTER_ENDPOINT = 'https://websites.goatcounter.com/count'
 GOATCOUNTER_SRC = '//gc.zgo.at/count.js'
+CONTACT_TRACKING = {
+    'index.html': [
+        ('mailto:hello@lucakosowski.com', 'contact-email-home', 'Contact email click — home'),
+        ('https://www.linkedin.com/in/luca-kosowski/', 'contact-linkedin-home', 'Contact LinkedIn click — home'),
+    ],
+    'approach/index.html': [
+        ('mailto:hello@lucakosowski.com', 'contact-email-approach', 'Contact email click — approach'),
+        ('https://www.linkedin.com/in/luca-kosowski/', 'contact-linkedin-approach', 'Contact LinkedIn click — approach'),
+    ],
+    'contact/index.html': [
+        ('mailto:hello@lucakosowski.com', 'contact-email-service-contact', 'Contact email click — service contact'),
+        ('https://www.linkedin.com/in/luca-kosowski/', 'contact-linkedin-service-contact', 'Contact LinkedIn click — service contact'),
+    ],
+}
 errors = []
 
 class HeadParser(HTMLParser):
@@ -37,7 +53,7 @@ def html_files(): return sorted(DOCS.glob('**/*.html')) if DOCS.exists() else []
 
 def check_required():
     if not DOCS.exists(): fail('docs output missing; run npm run build first')
-    required = ['index.html','CNAME','robots.txt','llms.txt','llms-full.txt','machine-answer-index.json','sitemap-index.xml']
+    required = ['index.html','approach/index.html','contact/index.html','CNAME','robots.txt','llms.txt','llms-full.txt','machine-answer-index.json','sitemap-index.xml']
     for rel in required:
         if not (DOCS / rel).exists(): fail(f'missing docs/{rel}')
     if (DOCS / 'CNAME').exists() and read(DOCS / 'CNAME').strip() != 'websites.lucakosowski.com':
@@ -59,6 +75,26 @@ def jsonld_objects(raw):
         elif isinstance(item, list):
             stack.extend(item)
     return out, None
+
+def all_jsonld_objects(path):
+    parser = HeadParser(); parser.feed(read(path))
+    out = []
+    for script in parser.scripts:
+        objects, exc = jsonld_objects(script)
+        if exc:
+            fail(f'{path.relative_to(DOCS)}: JSON-LD parse failed {exc}')
+            continue
+        out.extend(objects or [])
+    return out
+
+def objects_of_type(path, type_name):
+    matches = []
+    for obj in all_jsonld_objects(path):
+        typ = obj.get('@type')
+        types = typ if isinstance(typ, list) else [typ]
+        if type_name in types:
+            matches.append(obj)
+    return matches
 
 def is_google_site_verification_file(rel, html):
     return re.fullmatch(r'google[a-f0-9]+\.html', rel.name or '') and html.strip().startswith('google-site-verification:')
@@ -161,7 +197,81 @@ def check_robots_llms():
             if url and url not in txt:
                 fail(f'llms-full.txt missing answer URL {url}')
 
-check_required(); check_html(); check_sitemap(); check_machine_index(); check_robots_llms()
+def has_anchor_with_attrs(html, href, attrs):
+    for match in re.finditer(r'<a\b[^>]*>', html, re.I):
+        tag = match.group(0)
+        if f'href="{href}"' not in tag:
+            continue
+        if all(f'{key}="{value}"' in tag for key, value in attrs.items()):
+            return True
+    return False
+
+
+def check_contact_click_tracking():
+    contact_page = DOCS / 'contact/index.html'
+    if contact_page.exists():
+        html = read(contact_page)
+        text = re.sub(r'<[^>]+>', ' ', html)
+        for expected in ['Contact Websites by Luca', 'Start with a direct message', 'No form']:
+            if expected not in text:
+                fail(f'contact/index.html: missing expected contact page copy: {expected}')
+    for rel, expected_links in CONTACT_TRACKING.items():
+        path = DOCS / rel
+        if not path.exists():
+            fail(f'{rel}: missing page for contact click tracking check')
+            continue
+        html = read(path)
+        for href, event_name, title in expected_links:
+            if event_name.startswith('/'):
+                fail(f'{rel}: GoatCounter event path must not start with slash: {event_name}')
+            required_attrs = {
+                'data-goatcounter-click': event_name,
+                'data-goatcounter-title': title,
+            }
+            if not has_anchor_with_attrs(html, href, required_attrs):
+                fail(f'{rel}: contact link {href} missing GoatCounter click tracking event {event_name}')
+
+
+def check_person_schema_contract():
+    """Regression gate for service Person stitching and scoped identity facts."""
+    index = DOCS / 'index.html'
+    if not index.exists():
+        return
+    people = objects_of_type(index, 'Person')
+    if len(people) != 1:
+        fail(f'index.html: expected exactly one Person JSON-LD node, found {len(people)}')
+        return
+    person = people[0]
+    if person.get('@id') != PERSON_ID:
+        fail(f"index.html: Person @id mismatch {person.get('@id')}")
+    same_as = person.get('sameAs')
+    if same_as != EXPECTED_PERSON_SAME_AS:
+        fail(f'index.html: service Person.sameAs must be {EXPECTED_PERSON_SAME_AS}, found {same_as}')
+    forbidden_same_as = {'https://medium.com/@KappaK', 'https://www.youtube.com/@krabbykappa'}
+    if isinstance(same_as, list) and forbidden_same_as & set(same_as):
+        fail('index.html: service Person.sameAs contains stale Medium/YouTube handles')
+    knows_about = person.get('knowsAbout')
+    if not isinstance(knows_about, list) or len(knows_about) < 4:
+        fail(f'index.html: service Person.knowsAbout must contain at least four scoped topics, found {knows_about}')
+    else:
+        required = {'Website creation', 'Static websites', 'Digital marketing services', 'Multilingual communication'}
+        missing = sorted(required - set(knows_about))
+        if missing:
+            fail(f'index.html: service Person.knowsAbout missing required topics {missing}')
+    services = objects_of_type(index, 'Service')
+    if not services:
+        fail('index.html: missing Service JSON-LD node')
+    for service in services:
+        provider = service.get('provider')
+        if not isinstance(provider, dict) or provider.get('@id') != PERSON_ID:
+            fail(f"index.html: Service.provider must reference {PERSON_ID}, found {provider}")
+    root_index = ROOT.parent / 'Astro Portfolio/docs/index.html'
+    if root_index.exists():
+        root_people = objects_of_type(root_index, 'Person')
+        if root_people and root_people[0].get('@id') != person.get('@id'):
+            fail(f"cross-domain Person @id mismatch: root {root_people[0].get('@id')} vs service {person.get('@id')}")
+
+check_required(); check_html(); check_sitemap(); check_machine_index(); check_robots_llms(); check_contact_click_tracking(); check_person_schema_contract()
 if errors:
     print('FAIL')
     print('\n'.join(errors))

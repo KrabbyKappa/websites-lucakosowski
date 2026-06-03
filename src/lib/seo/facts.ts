@@ -12,6 +12,12 @@ export const personFacts = {
   url: 'https://lucakosowski.com/',
   image: 'https://lucakosowski.com/profile.jpg',
   knowsLanguage: ['Italian', 'Polish', 'English', 'Spanish', 'German'],
+  knowsAbout: [
+    'Website creation',
+    'Static websites',
+    'Digital marketing services',
+    'Multilingual communication',
+  ],
   sameAs: seoSite.sameAs,
 } as const;
 
