@@ -13,8 +13,7 @@ GOATCOUNTER_ENDPOINT = 'https://websites.goatcounter.com/count'
 GOATCOUNTER_SRC = '//gc.zgo.at/count.js'
 CONTACT_TRACKING = {
     'approach/index.html': [
-        ('mailto:hello@lucakosowski.com', 'contact-email-approach', 'Contact email click — approach'),
-        ('https://www.linkedin.com/in/luca-kosowski/', 'contact-linkedin-approach', 'Contact LinkedIn click — approach'),
+        ('/contact/', 'contact-page-approach', 'Contact page click — approach'),
     ],
     'contact/index.html': [
         ('mailto:hello@lucakosowski.com', 'contact-email-service-contact', 'Contact email click — service contact'),
@@ -285,6 +284,16 @@ def check_contact_click_tracking():
         for stale_event in ['contact-email-home', 'contact-linkedin-home']:
             if stale_event in home_html:
                 fail(f'index.html: stale inline contact click event remains: {stale_event}')
+    approach_page = DOCS / 'approach/index.html'
+    if approach_page.exists():
+        html = read(approach_page)
+        text = re.sub(r'<[^>]+>', ' ', html)
+        for forbidden in ['Contact information', 'Contact methods', 'contact-email-approach', 'contact-linkedin-approach', 'hello@lucakosowski.com', 'linkedin.com/in/luca-kosowski']:
+            if forbidden in html or forbidden in text:
+                fail(f'approach/index.html: removed contact section token remains: {forbidden}')
+        for expected in ['class="approach-contact-bridge"', 'class="service-contact-cta approach-contact-button" href="/contact/"', 'Contact Luca']:
+            if expected not in html:
+                fail(f'approach/index.html: missing replacement contact button token {expected}')
     if contact_page.exists():
         html = read(contact_page)
         text = re.sub(r'<[^>]+>', ' ', html)

@@ -403,8 +403,14 @@
   }
 }
 
-.approach-contact-home {
+.approach-contact-bridge {
   margin-top: clamp(1.6rem, 4vw, 3.8rem);
+  display: flex;
+  justify-content: center;
+}
+
+.approach-contact-button {
+  min-width: min(100%, 13rem);
 }
 
 @media (prefers-reduced-motion: reduce) {
