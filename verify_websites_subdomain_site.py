@@ -211,14 +211,28 @@ def check_service_navigation_and_support_links():
         header = header_match.group(0) if header_match else ''
         if '>FAQ<' in header or 'href="#service-faq"' in header:
             fail('index.html: FAQ should not remain in the top banner navigation')
-        for expected in ['id="faq-domain-hosting"', 'id="faq-contact-about-website"', 'href="/contact/">Open the contact page.', 'href="/approach/">Read the Approach page.']:
+        for expected in ['id="faq-domain-hosting"', 'id="faq-contact-about-website"', 'href="/contact/">Open the contact page.', 'href="/approach/">Read the Approach page.', 'class="service-bottom-cta"', 'class="metal-contact-cta" href="/contact/"']:
             if expected not in html:
-                fail(f'index.html: missing FAQ/support link token {expected}')
+                fail(f'index.html: missing FAQ/support or bottom contact CTA token {expected}')
     contact_page = DOCS / 'contact/index.html'
     if contact_page.exists():
         html = read(contact_page)
         if 'class="showcase-nav-attention" href="/contact/" aria-current="page"' not in html:
             fail('contact/index.html: contact banner link is not highlighted as the current page')
+    css_path = DOCS / 'styles.css'
+    if css_path.exists():
+        css = read(css_path)
+        attention_match = re.search(r'\.showcase-topbar nav a\.showcase-nav-attention\s*\{(?P<body>[^}]*)\}', css)
+        if not attention_match:
+            fail('styles.css: missing service contact current-link style rule')
+        else:
+            attention_rule = attention_match.group('body')
+            for forbidden in ['background: var(--bg)', 'border-radius: 999px', 'padding: 0.18rem 0.58rem', 'box-shadow: 0 8px']:
+                if forbidden in attention_rule:
+                    fail(f'styles.css: service contact nav still uses framed/button token {forbidden}')
+        for token in ['.metal-contact-cta', 'metalContactSurface', 'metalContactSweep']:
+            if token not in css:
+                fail(f'styles.css: missing metal contact CTA token {token}')
 
 
 def check_answer_support_links():
@@ -257,10 +271,10 @@ def check_contact_click_tracking():
     if contact_page.exists():
         html = read(contact_page)
         text = re.sub(r'<[^>]+>', ' ', html)
-        for expected in ['Contact Luca for your new website', 'Start with a direct message', 'No form', 'E-Mail', 'Linkedin']:
+        for expected in ['Contact Luca for your new website', 'E-Mail', 'Linkedin']:
             if expected not in text:
                 fail(f'contact/index.html: missing expected contact page copy: {expected}')
-        for forbidden in ['Direct website inquiry', 'What to send', 'A useful first message is short', 'just the context for the website you need', 'hello@lucakosowski.com', 'linkedin.com/in/luca-kosowski']:
+        for forbidden in ['Start with a direct message', 'No form, no funnel, no questionnaire', 'Direct website inquiry', 'What to send', 'A useful first message is short', 'just the context for the website you need', 'hello@lucakosowski.com', 'linkedin.com/in/luca-kosowski']:
             if forbidden in text:
                 fail(f'contact/index.html: forbidden visible contact page copy remains: {forbidden}')
         if 'showcase-topbar--static' not in html or 'href="/"' not in html:

@@ -39,7 +39,7 @@ export const seoRoutes: SeoRouteRecord[] = [
   {
     path: '/contact/',
     title: 'Contact Websites by Luca Kosowski',
-    description: 'Contact Luca Kosowski directly for simple, clear, reliable website inquiries. Email or LinkedIn; no form required.',
+    description: 'Contact Luca Kosowski directly for simple, clear, reliable website inquiries by email or LinkedIn.',
     family: 'service',
     language: 'en',
   },
