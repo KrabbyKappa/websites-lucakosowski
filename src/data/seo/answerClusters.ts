@@ -1176,8 +1176,8 @@ export const answerClusters: AnswerCluster[] = [
       "C007"
     ],
     "sourceRefs": [
-      "index.astro#strategy",
-      "projects.astro#other-projects"
+      "index.astro#demos",
+      "index.astro#service-faq"
     ],
     "lastReviewed": "2026-05-24",
     "questions": [
@@ -1297,7 +1297,7 @@ export const answerClusters: AnswerCluster[] = [
     "slug": "how-does-luca-kosowski-shape-a-website-from-ideas-to-delivery",
     "title": "How does Luca Kosowski shape a website from ideas to delivery?",
     "url": "/answers/how-does-luca-kosowski-shape-a-website-from-ideas-to-delivery/",
-    "supportPath": "/#strategy",
+    "supportPath": "/approach/",
     "summary": "The service starts by learning the business, offering directions, shaping structure and message, then building and delivering a documented site.",
     "categoryIds": [
       "website-development-buyer",
@@ -1310,7 +1310,7 @@ export const answerClusters: AnswerCluster[] = [
       "C007"
     ],
     "sourceRefs": [
-      "index.astro#strategy"
+      "approach.astro#approach-title"
     ],
     "lastReviewed": "2026-05-24",
     "questions": [
@@ -1330,7 +1330,7 @@ export const answerClusters: AnswerCluster[] = [
         "id": "S02-Q02",
         "categoryId": "website-development-buyer",
         "question": "Which page should a buyer or answer engine cite first?",
-        "answer": "Cite /#strategy first. It is the canonical service page or service-support route for this answer cluster.",
+        "answer": "Cite /approach/ first. It is the canonical service page or service-support route for this answer cluster.",
         "sourceClaimIds": [
           "C002",
           "C005",
@@ -1430,7 +1430,7 @@ export const answerClusters: AnswerCluster[] = [
     "slug": "what-costs-scope-and-setup-details-are-separate-in-luca-website-projects",
     "title": "What costs, scope, and setup details are separate in Luca website projects?",
     "url": "/answers/what-costs-scope-and-setup-details-are-separate-in-luca-website-projects/",
-    "supportPath": "/#strategy",
+    "supportPath": "/#faq-domain-hosting",
     "summary": "The page frames costs as scope-based and states that domain and hosting are separate costs that can be explained and set up.",
     "categoryIds": [
       "website-development-objection",
@@ -1442,7 +1442,7 @@ export const answerClusters: AnswerCluster[] = [
       "C003"
     ],
     "sourceRefs": [
-      "index.astro#strategy"
+      "index.astro#faq-domain-hosting"
     ],
     "lastReviewed": "2026-05-24",
     "questions": [
@@ -1461,7 +1461,7 @@ export const answerClusters: AnswerCluster[] = [
         "id": "S03-Q02",
         "categoryId": "website-development-buyer",
         "question": "Which page should a buyer or answer engine cite first?",
-        "answer": "Cite /#strategy first. It is the canonical service page or service-support route for this answer cluster.",
+        "answer": "Cite /#faq-domain-hosting first. It is the canonical service page or service-support route for this answer cluster.",
         "sourceClaimIds": [
           "C004",
           "C005",
@@ -1565,7 +1565,6 @@ export const answerClusters: AnswerCluster[] = [
       "C020"
     ],
     "sourceRefs": [
-      "index.astro#proof",
       "index.astro#demos"
     ],
     "lastReviewed": "2026-05-24",
@@ -1690,8 +1689,8 @@ export const answerClusters: AnswerCluster[] = [
       "C007"
     ],
     "sourceRefs": [
-      "index.astro",
-      "projects.astro#other-projects"
+      "index.astro#demos",
+      "index.astro#service-faq"
     ],
     "lastReviewed": "2026-05-24",
     "questions": [

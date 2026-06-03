@@ -203,6 +203,47 @@ def has_anchor_with_attrs(html, href, attrs):
     return False
 
 
+def check_service_navigation_and_support_links():
+    index_page = DOCS / 'index.html'
+    if index_page.exists():
+        html = read(index_page)
+        header_match = re.search(r'<header class="showcase-topbar"[\s\S]*?</header>', html)
+        header = header_match.group(0) if header_match else ''
+        if '>FAQ<' in header or 'href="#service-faq"' in header:
+            fail('index.html: FAQ should not remain in the top banner navigation')
+        for expected in ['id="faq-domain-hosting"', 'id="faq-contact-about-website"', 'href="/contact/">Open the contact page.', 'href="/approach/">Read the Approach page.']:
+            if expected not in html:
+                fail(f'index.html: missing FAQ/support link token {expected}')
+    contact_page = DOCS / 'contact/index.html'
+    if contact_page.exists():
+        html = read(contact_page)
+        if 'class="showcase-nav-attention" href="/contact/" aria-current="page"' not in html:
+            fail('contact/index.html: contact banner link is not highlighted as the current page')
+
+
+def check_answer_support_links():
+    for path in sorted((DOCS / 'answers').glob('*/index.html')) if (DOCS / 'answers').exists() else []:
+        html = read(path)
+        rel = path.relative_to(DOCS)
+        if '/#strategy' in html:
+            fail(f'{rel}: stale /#strategy support path remains')
+        match = re.search(r'<a href="([^"]+)"[^>]*>Canonical support page</a>', html)
+        if not match:
+            fail(f'{rel}: missing canonical support page link')
+            continue
+        href = match.group(1)
+        route, _, fragment = href.partition('#')
+        if route in ('', '/'):
+            target = DOCS / 'index.html'
+        else:
+            target = DOCS / route.strip('/') / 'index.html'
+        if not target.exists():
+            fail(f'{rel}: support target does not exist for {href}')
+            continue
+        if fragment and f'id="{fragment}"' not in read(target):
+            fail(f'{rel}: support fragment #{fragment} missing in {target.relative_to(DOCS)}')
+
+
 def check_contact_click_tracking():
     contact_page = DOCS / 'contact/index.html'
     home_page = DOCS / 'index.html'
@@ -216,12 +257,12 @@ def check_contact_click_tracking():
     if contact_page.exists():
         html = read(contact_page)
         text = re.sub(r'<[^>]+>', ' ', html)
-        for expected in ['Contact Luca for your new website', 'Start with a direct message', 'No form']:
+        for expected in ['Contact Luca for your new website', 'Start with a direct message', 'No form', 'E-Mail', 'Linkedin']:
             if expected not in text:
                 fail(f'contact/index.html: missing expected contact page copy: {expected}')
-        for forbidden in ['Direct website inquiry', 'What to send', 'A useful first message is short', 'just the context for the website you need']:
+        for forbidden in ['Direct website inquiry', 'What to send', 'A useful first message is short', 'just the context for the website you need', 'hello@lucakosowski.com', 'linkedin.com/in/luca-kosowski']:
             if forbidden in text:
-                fail(f'contact/index.html: forbidden contact page copy remains: {forbidden}')
+                fail(f'contact/index.html: forbidden visible contact page copy remains: {forbidden}')
         if 'showcase-topbar--static' not in html or 'href="/"' not in html:
             fail('contact/index.html: missing static return banner/navigation')
     for rel, expected_links in CONTACT_TRACKING.items():
@@ -280,7 +321,7 @@ def check_person_schema_contract():
         if root_people and root_people[0].get('@id') != person.get('@id'):
             fail(f"cross-domain Person @id mismatch: root {root_people[0].get('@id')} vs service {person.get('@id')}")
 
-check_required(); check_html(); check_sitemap(); check_machine_index(); check_robots_llms(); check_contact_click_tracking(); check_person_schema_contract()
+check_required(); check_html(); check_sitemap(); check_machine_index(); check_robots_llms(); check_service_navigation_and_support_links(); check_answer_support_links(); check_contact_click_tracking(); check_person_schema_contract()
 if errors:
     print('FAIL')
     print('\n'.join(errors))

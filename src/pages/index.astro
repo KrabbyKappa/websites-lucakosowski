@@ -64,7 +64,6 @@ const cylinderItems = [
     <a href="https://lucakosowski.com/" class="identity">Luca Kosowski</a>
     <nav aria-label="Website development sections">
       <a href="/approach/">Approach</a>
-      <a href="#service-faq">FAQ</a>
       <a href="/contact/">Contact</a>
     </nav>
   </header>
@@ -133,7 +132,7 @@ const cylinderItems = [
       <h2 id="service-faq-heading">Questions before starting a website</h2>
       <div class="service-faq-list service-faq-list--dropdown" aria-label="Website-development frequently asked questions">
         {serviceFaq.map((item) => (
-          <details class="service-faq-item" data-service-faq-item={item.question}>
+          <details id={item.id} class="service-faq-item" data-service-faq-item={item.question}>
             <summary data-faq-summary>
               <span>{item.question}</span>
               <span class="service-faq-toggle" aria-hidden="true">+</span>
@@ -331,6 +330,18 @@ const cylinderItems = [
         window.addEventListener('resize', onScroll, { passive: true });
         reduceMotionQuery.addEventListener?.('change', onScroll);
       }
+
+      const openFaqFromHash = () => {
+        const rawHash = window.location.hash;
+        if (!rawHash || !rawHash.startsWith('#faq-')) return;
+        const target = document.querySelector(rawHash);
+        if (!(target instanceof HTMLDetailsElement)) return;
+        target.open = true;
+        target.querySelector('[data-faq-summary]')?.setAttribute('aria-expanded', 'true');
+        requestAnimationFrame(() => target.scrollIntoView({ block: 'center', behavior: 'smooth' }));
+      };
+      openFaqFromHash();
+      window.addEventListener('hashchange', openFaqFromHash);
 
       const stage = document.querySelector('[data-trsnparent-wheel]');
       const wrap = stage?.querySelector('[data-cylinder-wrap]');
