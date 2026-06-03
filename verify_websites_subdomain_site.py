@@ -230,9 +230,12 @@ def check_service_navigation_and_support_links():
             fail('styles.css: missing service contact current-link style rule')
         else:
             attention_rule = attention_match.group('body')
-            for forbidden in ['background: var(--bg)', 'border-radius: 999px', 'padding: 0.18rem 0.58rem', 'box-shadow: 0 8px']:
+            for forbidden in ['background: var(--bg)', 'border-radius: 999px', 'padding: 0.18rem 0.58rem', 'box-shadow: 0 8px', 'font-weight: 850', 'text-decoration: underline']:
                 if forbidden in attention_rule:
-                    fail(f'styles.css: service contact nav still uses framed/button token {forbidden}')
+                    fail(f'styles.css: service contact nav still uses framed/bold/underline token {forbidden}')
+            for expected in ['font-weight: 400', 'text-decoration: none']:
+                if expected not in attention_rule:
+                    fail(f'styles.css: service contact nav missing normal text token {expected}')
         for token in ['.service-contact-cta', '.service-bottom-cta--scroll-gated.is-visible']:
             if token not in css:
                 fail(f'styles.css: missing normal delayed contact CTA token {token}')

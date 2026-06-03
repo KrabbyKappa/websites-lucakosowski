@@ -249,10 +249,8 @@ a:focus-visible {
   background: transparent;
   box-shadow: none;
   color: var(--accent-strong);
-  font-weight: 850;
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.34em;
+  font-weight: 400;
+  text-decoration: none;
 }
 
 .hero,
