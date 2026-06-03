@@ -211,9 +211,12 @@ def check_service_navigation_and_support_links():
         header = header_match.group(0) if header_match else ''
         if '>FAQ<' in header or 'href="#service-faq"' in header:
             fail('index.html: FAQ should not remain in the top banner navigation')
-        for expected in ['id="faq-domain-hosting"', 'id="faq-contact-about-website"', 'href="/contact/">Open the contact page.', 'href="/approach/">Read the Approach page.', 'class="service-bottom-cta"', 'class="metal-contact-cta" href="/contact/"']:
+        for expected in ['id="faq-domain-hosting"', 'id="faq-contact-about-website"', 'href="/contact/">Open the contact page.', 'href="/approach/">Read the Approach page.', 'class="service-bottom-cta service-bottom-cta--scroll-gated"', 'data-scroll-reveal-cta', 'class="service-contact-cta" href="/contact/"']:
             if expected not in html:
-                fail(f'index.html: missing FAQ/support or bottom contact CTA token {expected}')
+                fail(f'index.html: missing FAQ/support or delayed bottom contact CTA token {expected}')
+        for forbidden in ['metal-contact-cta', 'metalContactSurface', 'metalContactSweep']:
+            if forbidden in html:
+                fail(f'index.html: metallic contact CTA token remains: {forbidden}')
     contact_page = DOCS / 'contact/index.html'
     if contact_page.exists():
         html = read(contact_page)
@@ -230,9 +233,20 @@ def check_service_navigation_and_support_links():
             for forbidden in ['background: var(--bg)', 'border-radius: 999px', 'padding: 0.18rem 0.58rem', 'box-shadow: 0 8px']:
                 if forbidden in attention_rule:
                     fail(f'styles.css: service contact nav still uses framed/button token {forbidden}')
-        for token in ['.metal-contact-cta', 'metalContactSurface', 'metalContactSweep']:
+        for token in ['.service-contact-cta', '.service-bottom-cta--scroll-gated.is-visible']:
             if token not in css:
-                fail(f'styles.css: missing metal contact CTA token {token}')
+                fail(f'styles.css: missing normal delayed contact CTA token {token}')
+        for token in ['.metal-contact-cta', 'metalContactSurface', 'metalContactSweep', '--reflection-cycle', 'mix-blend-mode: screen']:
+            if token in css:
+                fail(f'styles.css: metallic or animated contact CTA token remains {token}')
+        cta_match = re.search(r'\.service-contact-cta\s*\{(?P<body>[^}]*)\}', css)
+        if not cta_match:
+            fail('styles.css: missing .service-contact-cta rule')
+        else:
+            cta_rule = cta_match.group('body')
+            for forbidden in ['animation', 'linear-gradient', 'background-size', 'text-shadow']:
+                if forbidden in cta_rule:
+                    fail(f'styles.css: service contact CTA still has metallic/animated styling token {forbidden}')
 
 
 def check_answer_support_links():

@@ -153,14 +153,30 @@ const cylinderItems = [
       </div>
     </section>
 
-    <section class="service-bottom-cta" aria-label="Contact Luca about a website">
-      <a class="metal-contact-cta" href="/contact/"><span>Contact</span></a>
+    <section class="service-bottom-cta service-bottom-cta--scroll-gated" aria-label="Contact Luca about a website" data-scroll-reveal-cta aria-hidden="true">
+      <a class="service-contact-cta" href="/contact/">Contact</a>
     </section>
 
   </main>
 
   <script is:inline>
     (() => {
+      const scrollRevealCta = document.querySelector('[data-scroll-reveal-cta]');
+      if (scrollRevealCta) {
+        let scrollRevealTimer = 0;
+        const showScrollRevealCta = () => {
+          scrollRevealCta.classList.add('is-visible');
+          scrollRevealCta.removeAttribute('aria-hidden');
+        };
+        const scheduleScrollRevealCta = () => {
+          if (scrollRevealTimer || scrollRevealCta.classList.contains('is-visible') || window.scrollY < 24) return;
+          scrollRevealTimer = window.setTimeout(showScrollRevealCta, 1500);
+          window.removeEventListener('scroll', scheduleScrollRevealCta);
+        };
+        window.addEventListener('scroll', scheduleScrollRevealCta, { passive: true });
+        scheduleScrollRevealCta();
+      }
+
       const lavaLayer = document.querySelector('[data-lava-lamp-bg]');
       const lavaCanvas = lavaLayer?.querySelector('[data-lava-canvas]');
       const lavaMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
