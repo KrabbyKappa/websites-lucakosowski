@@ -12,10 +12,6 @@ EXPECTED_PERSON_SAME_AS = ['https://lucakosowski.com/']
 GOATCOUNTER_ENDPOINT = 'https://websites.goatcounter.com/count'
 GOATCOUNTER_SRC = '//gc.zgo.at/count.js'
 CONTACT_TRACKING = {
-    'index.html': [
-        ('mailto:hello@lucakosowski.com', 'contact-email-home', 'Contact email click — home'),
-        ('https://www.linkedin.com/in/luca-kosowski/', 'contact-linkedin-home', 'Contact LinkedIn click — home'),
-    ],
     'approach/index.html': [
         ('mailto:hello@lucakosowski.com', 'contact-email-approach', 'Contact email click — approach'),
         ('https://www.linkedin.com/in/luca-kosowski/', 'contact-linkedin-approach', 'Contact LinkedIn click — approach'),
@@ -209,12 +205,25 @@ def has_anchor_with_attrs(html, href, attrs):
 
 def check_contact_click_tracking():
     contact_page = DOCS / 'contact/index.html'
+    home_page = DOCS / 'index.html'
+    if home_page.exists():
+        home_html = read(home_page)
+        if '<section id="contact"' in home_html:
+            fail('index.html: redundant inline contact section should not remain after dedicated contact page')
+        for stale_event in ['contact-email-home', 'contact-linkedin-home']:
+            if stale_event in home_html:
+                fail(f'index.html: stale inline contact click event remains: {stale_event}')
     if contact_page.exists():
         html = read(contact_page)
         text = re.sub(r'<[^>]+>', ' ', html)
-        for expected in ['Contact Websites by Luca', 'Start with a direct message', 'No form']:
+        for expected in ['Contact Luca for your new website', 'Start with a direct message', 'No form']:
             if expected not in text:
                 fail(f'contact/index.html: missing expected contact page copy: {expected}')
+        for forbidden in ['Direct website inquiry', 'What to send', 'A useful first message is short', 'just the context for the website you need']:
+            if forbidden in text:
+                fail(f'contact/index.html: forbidden contact page copy remains: {forbidden}')
+        if 'showcase-topbar--static' not in html or 'href="/"' not in html:
+            fail('contact/index.html: missing static return banner/navigation')
     for rel, expected_links in CONTACT_TRACKING.items():
         path = DOCS / rel
         if not path.exists():
