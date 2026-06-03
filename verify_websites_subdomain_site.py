@@ -7,6 +7,8 @@ ROOT = Path(__file__).resolve().parent
 DOCS = ROOT / 'docs'
 SITE = 'https://websites.lucakosowski.com'
 OLD = 'https://lucakosowski.com/website-development'
+GOATCOUNTER_ENDPOINT = 'https://websites.goatcounter.com/count'
+GOATCOUNTER_SRC = '//gc.zgo.at/count.js'
 errors = []
 
 class HeadParser(HTMLParser):
@@ -15,12 +17,15 @@ class HeadParser(HTMLParser):
         self.canonicals = []
         self.og_urls = []
         self.scripts = []
+        self.script_attrs = []
         self.in_jsonld = False
     def handle_starttag(self, tag, attrs):
         d = dict(attrs)
         if tag == 'link' and d.get('rel') == 'canonical': self.canonicals.append(d.get('href', ''))
         if tag == 'meta' and d.get('property') == 'og:url': self.og_urls.append(d.get('content', ''))
-        if tag == 'script' and d.get('type') == 'application/ld+json': self.in_jsonld = True
+        if tag == 'script':
+            self.script_attrs.append(d)
+            if d.get('type') == 'application/ld+json': self.in_jsonld = True
     def handle_endtag(self, tag):
         if tag == 'script': self.in_jsonld = False
     def handle_data(self, data):
@@ -69,6 +74,14 @@ def check_html():
         if OLD in html or '/website-development/assets/' in html:
             fail(f'{rel}: stale root service URL or asset path')
         parser = HeadParser(); parser.feed(html)
+        goatcounter_scripts = [
+            attrs for attrs in parser.script_attrs
+            if attrs.get('data-goatcounter') == GOATCOUNTER_ENDPOINT and attrs.get('src') == GOATCOUNTER_SRC
+        ]
+        if len(goatcounter_scripts) != 1:
+            fail(f'{rel}: expected exactly one GoatCounter script for {GOATCOUNTER_ENDPOINT}')
+        elif 'async' not in goatcounter_scripts[0]:
+            fail(f'{rel}: GoatCounter script must be async')
         if len(parser.canonicals) != 1:
             fail(f'{rel}: expected exactly one canonical')
         else:
