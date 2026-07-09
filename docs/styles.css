@@ -1289,16 +1289,20 @@ p {
   }
 
   .trsnparent_wheel-stage {
-    width: min(100%, calc(100vw - 2rem));
-    overflow: clip;
-    contain: paint;
+    width: 100vw;
+    max-width: none;
+    margin-inline: calc(50% - 50vw);
+    overflow: visible;
+    contain: layout;
+    padding-bottom: clamp(1.6rem, 8vw, 3rem);
   }
 
   .view-home {
-    max-width: 100%;
-    min-height: 460px;
-    overflow: clip;
-    contain: layout paint;
+    width: 100vw;
+    max-width: none;
+    min-height: clamp(500px, 126vw, 610px);
+    overflow: visible;
+    contain: layout;
     touch-action: pan-y;
   }
 
