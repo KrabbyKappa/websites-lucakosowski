@@ -1,0 +1,343 @@
+---
+import ServiceLayout from '../layouts/ServiceLayout.astro';
+
+const auditApiUrl = import.meta.env.PUBLIC_WEBSITE_AUDIT_API_URL || 'https://api.websites.lucakosowski.com';
+---
+<ServiceLayout
+  title="Website Readiness Check – Websites by Luca Kosowski"
+  description="Run an automated first-pass review of visible website HTML signals for trust, clarity, SEO basics, accessibility, and conversion readiness."
+  canonicalPath="/website-check/"
+  ogTitle="Website Readiness Check – Websites by Luca Kosowski"
+  ogDescription="Check visible website signals before requesting a deeper human review from Luca Kosowski."
+  bodyClass="website-check-document"
+>
+  <div class="bsp-rebuild-home utility-page-shell website-check-page-shell">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="showcase-topbar showcase-topbar--static" data-floating-header aria-label="Website check navigation">
+    <a href="/" class="identity">Home</a>
+    <nav id="check-navigation" aria-label="Website check page links">
+      <a href="/faq/">FAQ</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main" class="website-check-route" tabindex="-1">
+    <section class="website-check-hero portfolio-hero" aria-labelledby="website-check-title">
+      <div class="portfolio-grid utility-hero-grid">
+        <div class="website-check-copy">
+          <h1 id="website-check-title">Check how your website scores</h1>
+          <p class="hero-lead">Get an automated first-pass review of your website's trust, clarity, SEO basics, accessibility signals, and conversion readiness.</p>
+        </div>
+
+        <form class="website-check-form" data-website-check-form data-api-env="PUBLIC_WEBSITE_AUDIT_API_URL" data-api-url={auditApiUrl}>
+          <label for="website-check-url">Enter the URL of the website you want to check</label>
+          <div class="website-check-form-row">
+            <input id="website-check-url" name="url" type="text" inputmode="url" autocomplete="url" placeholder="https://example.com" required>
+            <button type="submit">Run website check</button>
+          </div>
+          <p class="website-check-note">This checks visible HTML signals only. It does not replace a human website review.</p>
+        </form>
+
+        <p class="website-check-loading" data-website-check-loading hidden>Checking visible website signals...</p>
+        <p class="website-check-error" data-website-check-error role="alert" hidden></p>
+      </div>
+    </section>
+
+    <section class="website-check-result" data-website-check-result hidden aria-live="polite" aria-labelledby="website-check-result-title">
+      <div class="website-check-report-intro">
+        <p class="report-kicker">Automated first-pass review</p>
+        <h2 id="website-check-result-title">Website Readiness Score</h2>
+        <p data-result-summary>This automated first-pass review will appear here after the check runs.</p>
+        <dl class="website-check-meta" aria-label="Checked website details">
+          <div>
+            <dt>Checked URL</dt>
+            <dd data-result-final-url>Ready to check</dd>
+          </div>
+          <div>
+            <dt>Review type</dt>
+            <dd>Visible HTML signals only</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="website-check-report-grid">
+        <article class="website-check-score-panel" aria-label="Website Readiness Score">
+          <svg class="website-check-gauge" viewBox="0 0 240 154" role="img" aria-label="Website Readiness Score">
+            <path d="M36 126 A84 84 0 0 1 204 126" class="website-check-gauge-track" pathLength="100"></path>
+            <path d="M36 126 A84 84 0 0 1 204 126" class="website-check-gauge-progress" pathLength="100" stroke-dasharray="0 100" data-result-gauge-path></path>
+            <text x="120" y="91" text-anchor="middle" dominant-baseline="middle" class="website-check-gauge-score">
+              <tspan class="website-check-gauge-value" data-result-score>0</tspan><tspan class="website-check-gauge-percent" dx="2" dy="2">%</tspan>
+            </text>
+          </svg>
+          <strong data-result-grade>Ready to check</strong>
+          <span>This score summarizes the visible signals visitors, search previews, and accessibility tools often see first.</span>
+        </article>
+
+        <article class="website-check-profile-panel" aria-label="Readiness profile graph">
+          <div>
+            <h3>Readiness profile</h3>
+            <p>Each point shows one area of the visible website structure.</p>
+          </div>
+          <svg class="website-check-radar" viewBox="0 0 300 300" role="img" aria-label="Readiness profile radar graph" data-result-radar></svg>
+          <div class="website-check-status-stack" data-result-status-stack aria-label="Category status distribution"></div>
+        </article>
+      </div>
+
+      <div class="website-check-metric-strip" data-result-metrics aria-label="Readiness category scores"></div>
+
+      <section class="website-check-report-section" aria-labelledby="website-check-categories-title">
+        <div class="website-check-section-head">
+          <h3 id="website-check-categories-title">What the check found</h3>
+          <p>Plain-language signals that show where the page is already clear and where the next improvement would help.</p>
+        </div>
+        <div class="website-check-category-list" data-result-categories aria-label="Readiness categories"></div>
+      </section>
+
+      <section class="website-check-evidence-board" aria-label="Signal summary">
+        <article>
+          <h3>Strong signals</h3>
+          <ul data-result-strengths></ul>
+        </article>
+        <article>
+          <h3>Opportunities</h3>
+          <ul data-result-opportunities></ul>
+        </article>
+      </section>
+
+      <section class="website-check-next-step" aria-labelledby="website-check-next-step-title">
+        <div>
+          <p class="report-kicker">Human review</p>
+          <h3 id="website-check-next-step-title">Recommended next step</h3>
+          <p data-result-next-step>A human review can identify the highest-impact fixes.</p>
+        </div>
+        <a class="service-contact-cta" href="/contact/">Want the full human review?</a>
+      </section>
+    </section>
+
+    <noscript>
+      <section class="scope-note decision-note website-check-noscript">
+        <h2>Automated first-pass review</h2>
+        <p>This page needs JavaScript to run the live check. You can still contact Luca for a human review of the highest-impact fixes.</p>
+        <a class="service-contact-cta" href="/contact/">Contact Luca</a>
+      </section>
+    </noscript>
+  </main>
+  </div>
+
+  <script define:vars={{ auditApiUrl }}>
+    const form = document.querySelector('[data-website-check-form]');
+    const loading = document.querySelector('[data-website-check-loading]');
+    const error = document.querySelector('[data-website-check-error]');
+    const result = document.querySelector('[data-website-check-result]');
+    const svgNamespace = 'http://www.w3.org/2000/svg';
+
+    const normalizeInputUrl = (value) => {
+      const trimmed = String(value || '').trim().replace(/^<|>$/g, '');
+      if (!trimmed) return '';
+      if (trimmed.startsWith('//')) return `https:${trimmed}`;
+      return /^[a-z][a-z0-9+.-]*:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+    };
+
+    const setText = (selector, text) => {
+      const node = result?.querySelector(selector);
+      if (node) node.textContent = text || '';
+    };
+
+    const publicStatusLabel = (status) => ({
+      strong: 'Strong',
+      good: 'Good',
+      needs_attention: 'Needs attention',
+    })[status] || 'Checked';
+
+    const makeListItem = (item) => {
+      const li = document.createElement('li');
+      const strong = document.createElement('strong');
+      const span = document.createElement('span');
+      strong.textContent = item?.title || 'Visible signal';
+      span.textContent = item?.detail || item?.summary || 'This can be reviewed in more detail.';
+      li.append(strong, span);
+      return li;
+    };
+
+    const fillList = (selector, items, fallback) => {
+      const list = result?.querySelector(selector);
+      if (!list) return;
+      const rows = Array.isArray(items) && items.length ? items : [fallback];
+      list.replaceChildren(...rows.map(makeListItem));
+    };
+
+    const renderMetrics = (categories) => {
+      const list = result?.querySelector('[data-result-metrics]');
+      if (!list) return;
+      const rows = Array.isArray(categories) ? categories : [];
+      list.replaceChildren(...rows.map((category) => {
+        const item = document.createElement('article');
+        const score = Math.max(0, Math.min(100, Number(category?.score || 0)));
+        const strong = document.createElement('strong');
+        const span = document.createElement('span');
+        strong.textContent = String(Math.round(score));
+        span.textContent = category?.label || 'Readiness signal';
+        item.append(strong, span);
+        return item;
+      }));
+    };
+
+    const createSvg = (tag, attributes = {}) => {
+      const node = document.createElementNS(svgNamespace, tag);
+      Object.entries(attributes).forEach(([key, value]) => node.setAttribute(key, String(value)));
+      return node;
+    };
+
+    const renderRadar = (categories) => {
+      const radar = result?.querySelector('[data-result-radar]');
+      if (!radar) return;
+      const rows = Array.isArray(categories) ? categories.slice(0, 6) : [];
+      const count = rows.length || 1;
+      const center = 150;
+      const radius = 104;
+      const children = [];
+      [radius, radius * 0.66, radius * 0.33].forEach((r) => {
+        children.push(createSvg('circle', { cx: center, cy: center, r: r.toFixed(1), class: 'website-check-radar-ring' }));
+      });
+      const points = rows.map((category, index) => {
+        const score = Math.max(0, Math.min(100, Number(category?.score || 0)));
+        const angle = (-Math.PI / 2) + ((2 * Math.PI * index) / count);
+        const outerX = center + Math.cos(angle) * radius;
+        const outerY = center + Math.sin(angle) * radius;
+        const pointX = center + Math.cos(angle) * radius * (score / 100);
+        const pointY = center + Math.sin(angle) * radius * (score / 100);
+        const labelX = center + Math.cos(angle) * (radius + 28);
+        const labelY = center + Math.sin(angle) * (radius + 28);
+        children.push(createSvg('line', {
+          x1: center,
+          y1: center,
+          x2: outerX.toFixed(1),
+          y2: outerY.toFixed(1),
+          class: 'website-check-radar-spoke',
+        }));
+        const text = createSvg('text', {
+          x: labelX.toFixed(1),
+          y: labelY.toFixed(1),
+          'text-anchor': 'middle',
+          class: 'website-check-radar-label',
+        });
+        text.textContent = String(category?.label || 'Signal').split(' ')[0];
+        children.push(text);
+        return `${pointX.toFixed(1)},${pointY.toFixed(1)}`;
+      });
+      if (points.length) {
+        children.push(createSvg('polygon', { points: points.join(' '), class: 'website-check-radar-shape' }));
+      }
+      radar.replaceChildren(...children);
+    };
+
+    const renderStatusStack = (categories) => {
+      const stack = result?.querySelector('[data-result-status-stack]');
+      if (!stack) return;
+      const rows = Array.isArray(categories) ? categories : [];
+      const counts = rows.reduce((acc, category) => {
+        const key = category?.status || 'good';
+        acc[key] = (acc[key] || 0) + 1;
+        return acc;
+      }, {});
+      const total = Math.max(1, rows.length);
+      const segments = ['strong', 'good', 'needs_attention'].map((key) => {
+        const item = document.createElement('span');
+        item.className = `status-${key}`;
+        item.style.width = `${((counts[key] || 0) / total) * 100}%`;
+        item.textContent = counts[key] ? String(counts[key]) : '';
+        item.setAttribute('aria-label', `${publicStatusLabel(key)}: ${counts[key] || 0}`);
+        return item;
+      });
+      stack.replaceChildren(...segments);
+    };
+
+    const renderCategories = (categories) => {
+      const list = result?.querySelector('[data-result-categories]');
+      if (!list) return;
+      const rows = Array.isArray(categories) ? categories : [];
+      list.replaceChildren(...rows.map((category) => {
+        const item = document.createElement('article');
+        item.className = `website-check-category status-${category?.status || 'good'}`;
+        const head = document.createElement('div');
+        const label = document.createElement('strong');
+        const score = document.createElement('span');
+        const bar = document.createElement('i');
+        const summary = document.createElement('p');
+        const value = Math.max(0, Math.min(100, Number(category?.score || 0)));
+        label.textContent = category?.label || 'Readiness signal';
+        score.textContent = `${Math.round(value)}/100 · ${publicStatusLabel(category?.status)}`;
+        bar.style.setProperty('--score', `${value}%`);
+        summary.textContent = category?.summary || 'Visible page signal checked.';
+        head.append(label, score);
+        item.append(head, bar, summary);
+        return item;
+      }));
+    };
+
+    const showError = (message) => {
+      if (error) {
+        error.textContent = message || 'The check could not be completed right now.';
+        error.hidden = false;
+      }
+      if (result) result.hidden = true;
+    };
+
+    const renderResult = (audit) => {
+      const score = Math.max(0, Math.min(100, Number(audit?.score || 0)));
+      result.hidden = false;
+      setText('[data-result-score]', String(Math.round(score)));
+      setText('[data-result-grade]', audit?.grade_label || 'Automated first-pass review');
+      setText('[data-result-summary]', audit?.summary || audit?.limitations || 'This checks visible HTML signals only.');
+      setText('[data-result-final-url]', audit?.final_url || audit?.url || 'Checked website');
+      const gaugePath = result.querySelector('[data-result-gauge-path]');
+      if (gaugePath) gaugePath.setAttribute('stroke-dasharray', `${score} 100`);
+      renderMetrics(audit?.categories);
+      renderRadar(audit?.categories);
+      renderStatusStack(audit?.categories);
+      renderCategories(audit?.categories);
+      fillList('[data-result-strengths]', audit?.strengths, {
+        title: 'Visible HTML checked',
+        detail: 'The automated check found enough page structure to produce a first-pass review.',
+      });
+      fillList('[data-result-opportunities]', audit?.opportunities, {
+        title: 'Request a human review',
+        detail: 'A human review can identify the highest-impact fixes beyond visible HTML signals.',
+      });
+      setText('[data-result-next-step]', audit?.recommended_next_step?.detail || 'A human review can identify the highest-impact fixes.');
+    };
+
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const input = form.querySelector('input[name="url"]');
+      const button = form.querySelector('button[type="submit"]');
+      const url = normalizeInputUrl(input?.value);
+      if (!url) {
+        showError('Enter a website URL to check.');
+        return;
+      }
+      if (error) error.hidden = true;
+      if (loading) loading.hidden = false;
+      if (button) button.disabled = true;
+      try {
+        const base = String(form.dataset.apiUrl || auditApiUrl || '').replace(/\/$/, '');
+        const response = await fetch(`${base}/api/public-html-audit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url }),
+        });
+        const payload = await response.json();
+        if (!response.ok) {
+          throw new Error(payload?.error?.message || 'The check could not be completed right now.');
+        }
+        renderResult(payload);
+      } catch (requestError) {
+        showError(requestError instanceof Error ? requestError.message : 'The check could not be completed right now.');
+      } finally {
+        if (loading) loading.hidden = true;
+        if (button) button.disabled = false;
+      }
+    });
+  </script>
+</ServiceLayout>

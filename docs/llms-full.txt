@@ -7,7 +7,7 @@ Last reviewed: 2026-06-01
 
 ## Core public pages
 - https://websites.lucakosowski.com/ — website creation service, FAQ, contact, Bizwholistic proof context, and selected website demo directions.
-- https://websites.lucakosowski.com/approach/ — plain-language approach page showing how a website direction is shaped around real Bizwholistic preview screens.
+- https://websites.lucakosowski.com/#approach — comparison of website roles, proof screens, and Luca's delivery process.
 - https://websites.lucakosowski.com/contact/ — direct email and LinkedIn contact route for website inquiries.
 - https://websites.lucakosowski.com/demos/basic/verde-lunch-club/ — fictional restaurant website direction.
 - https://websites.lucakosowski.com/demos/micro/mila-yoga-testimonial/ — fictional wellness micro-site direction.

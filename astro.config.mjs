@@ -8,6 +8,9 @@ export default defineConfig({
   outDir: './docs',
   output: 'static',
   compressHTML: false,
+  devToolbar: {
+    enabled: false,
+  },
   trailingSlash: 'always',
   integrations: [
     sitemap({

@@ -2,36 +2,39 @@
 import ServiceLayout from '../layouts/ServiceLayout.astro';
 ---
 <ServiceLayout
-  title="Contact Luca for your new website"
+  title="Contact me for more information"
   description="Contact Luca Kosowski directly for simple, clear, reliable website inquiries by email or LinkedIn."
   canonicalPath="/contact/"
-  ogTitle="Contact Luca for your new website"
+  ogTitle="Contact me for more information"
   ogDescription="Start a website inquiry directly with Luca Kosowski by email or LinkedIn. No form, no funnel, just a clear first message."
 >
+  <div class="bsp-rebuild-home utility-page-shell contact-page-shell">
   <a class="skip-link" href="#main">Skip to main content</a>
 
-  <header class="showcase-topbar showcase-topbar--static contact-topbar" aria-label="Website contact navigation">
-    <a href="/" class="identity">Websites by Luca</a>
-    <nav aria-label="Contact page links">
-      <a href="/">Home</a>
-      <a href="/approach/">Approach</a>
+  <header class="showcase-topbar showcase-topbar--static contact-topbar" data-floating-header aria-label="Website contact navigation">
+    <a href="/" class="identity">Home</a>
+    <nav id="contact-navigation" aria-label="Contact page links">
+      <a href="/faq/">FAQ</a>
       <a class="showcase-nav-attention" href="/contact/" aria-current="page">Contact</a>
     </nav>
   </header>
 
   <main id="main" class="contact-route" tabindex="-1">
-    <section class="scope-note decision-note contact-page-card" aria-labelledby="contact-title">
-      <h1 id="contact-title">Contact Luca for your new website</h1>
+    <section class="contact-page-card portfolio-hero" aria-labelledby="contact-title">
+      <div class="portfolio-grid utility-hero-grid">
+        <h1 id="contact-title">Contact me for more information</h1>
 
-      <div class="decision-grid contact-method-grid contact-method-grid--buttons" aria-label="Contact methods">
-        <a class="contact-method-button" href="mailto:hello@lucakosowski.com" aria-label="Email Luca at hello@lucakosowski.com" data-goatcounter-click="contact-email-service-contact" data-goatcounter-title="Contact email click — service contact">
-          <strong>E-Mail</strong>
-        </a>
+        <div class="contact-method-grid contact-method-grid--buttons" aria-label="Contact methods">
+          <a class="contact-method-button" href="mailto:hello@lucakosowski.com" aria-label="Email Luca at hello@lucakosowski.com" data-goatcounter-click="contact-email-service-contact" data-goatcounter-title="Contact email click — service contact">
+            <strong>E-Mail</strong>
+          </a>
 
-        <a class="contact-method-button" href="https://www.linkedin.com/in/luca-kosowski/" target="_blank" rel="noopener noreferrer" aria-label="Open Luca Kosowski on Linkedin" data-goatcounter-click="contact-linkedin-service-contact" data-goatcounter-title="Contact LinkedIn click — service contact">
-          <strong>Linkedin</strong>
-        </a>
+          <a class="contact-method-button" href="https://www.linkedin.com/in/luca-kosowski/" target="_blank" rel="noopener noreferrer" aria-label="Open Luca Kosowski on Linkedin" data-goatcounter-click="contact-linkedin-service-contact" data-goatcounter-title="Contact LinkedIn click — service contact">
+            <strong>Linkedin</strong>
+          </a>
+        </div>
       </div>
     </section>
   </main>
+  </div>
 </ServiceLayout>

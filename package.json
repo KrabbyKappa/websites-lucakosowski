@@ -1,5 +1,5 @@
 {
-  "name": "websites-by-luca",
+  "name": "websites-farm-oci-prototype",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -12,5 +12,8 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
     "astro": "^5.0.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.61.1"
   }
 }

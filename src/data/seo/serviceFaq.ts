@@ -27,10 +27,10 @@ export const serviceFaq: ServiceFaqItem[] = [
   {
     id: 'faq-website-crafted-approach',
     question: 'Can I see more about how the website is crafted?',
-    answer: 'Yes. If you want a deeper look at the thinking behind the work, the Approach page walks through how I shape the first direction, choose what the page needs to prove, and refine the site around real screens.',
+    answer: 'Yes. The homepage approach section shows how I match the website to the job it needs to do, using real screens from two different business contexts.',
     link: {
-      href: '/approach/',
-      label: 'Read the Approach page.',
+      href: '/#approach',
+      label: 'See the approach.',
     },
   },
   {

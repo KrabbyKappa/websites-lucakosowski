@@ -13,6 +13,7 @@ interface Props {
   ogImage?: string;
   faqItems?: Array<{ question: string; answer: string }>;
   noindex?: boolean;
+  bodyClass?: string;
 }
 
 const {
@@ -24,6 +25,7 @@ const {
   ogImage = seoSite.defaultImage,
   faqItems = [],
   noindex = false,
+  bodyClass = '',
 } = Astro.props;
 
 const route = routeOrFallback(canonicalPath, { title, description, family: 'service' });
@@ -56,10 +58,10 @@ const schema = schemaForRoute({ path: route.path, title, description, family: ro
   <link rel="stylesheet" href="/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
   <SeoJsonLd data={schema} />
 </head>
-<body>
+<body class={bodyClass || undefined}>
   <slot />
   <script data-goatcounter="https://websites.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>

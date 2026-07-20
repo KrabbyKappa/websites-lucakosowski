@@ -1,0 +1,61 @@
+---
+import ServiceLayout from '../layouts/ServiceLayout.astro';
+import { serviceFaq } from '../data/seo/serviceFaq';
+---
+
+<ServiceLayout
+  title="Website questions answered – Luca Kosowski"
+  description="Clear answers about starting, shaping, building, hosting, delivering, and improving a website with Luca Kosowski."
+  canonicalPath="/faq/"
+  ogTitle="Website questions answered – Luca Kosowski"
+  ogDescription="Practical answers about the website process, scope, timing, hosting, showcases, follow-up improvements, and getting started."
+  faqItems={serviceFaq}
+>
+  <div class="bsp-rebuild-home utility-page-shell faq-page-shell">
+    <a class="skip-link" href="#faq-main">Skip to questions</a>
+
+    <header class="showcase-topbar showcase-topbar--static" data-floating-header aria-label="Website FAQ navigation">
+      <a href="/" class="identity">Home</a>
+      <nav id="faq-navigation" aria-label="Website development sections">
+        <a href="/faq/" aria-current="page">FAQ</a>
+        <a href="/contact/">Contact</a>
+      </nav>
+    </header>
+
+    <main id="faq-main" class="faq-route" tabindex="-1">
+      <section class="faq-page-hero portfolio-hero" aria-labelledby="faq-page-title">
+        <div class="portfolio-grid utility-hero-grid">
+          <h1 id="faq-page-title">Questions</h1>
+          <p>Common questions and concerns from previous clients</p>
+        </div>
+      </section>
+
+      <section class="faq-page-list" aria-label="Website-development frequently asked questions">
+        {serviceFaq.map((item) => (
+          <details id={item.id} class="service-faq-item" data-service-faq-item={item.question}>
+            <summary data-faq-summary>
+              <span>{item.question}</span>
+              <span class="service-faq-toggle" aria-hidden="true">+</span>
+            </summary>
+            <div class="service-faq-answer">
+              <p>
+                {item.answer}
+                {item.link && <>{' '}<a href={item.link.href}>{item.link.label}</a></>}
+              </p>
+            </div>
+          </details>
+        ))}
+      </section>
+    </main>
+  </div>
+
+  <script is:inline>
+    document.querySelectorAll('[data-faq-summary]').forEach((summary) => {
+      summary.setAttribute('aria-expanded', 'false');
+      summary.parentElement.addEventListener('toggle', () => {
+        summary.setAttribute('aria-expanded', String(summary.parentElement.open));
+        summary.querySelector('.service-faq-toggle').textContent = summary.parentElement.open ? '−' : '+';
+      });
+    });
+  </script>
+</ServiceLayout>
