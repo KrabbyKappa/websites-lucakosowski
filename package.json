@@ -7,6 +7,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "test:carousel": "node --test tests/carousel-physics.test.mjs",
     "verify": "python3 verify_websites_subdomain_site.py"
   },
   "dependencies": {
