@@ -343,6 +343,12 @@ const approachCases = [
       sampleCarouselVelocity,
       stepCarouselSpring,
     } from '../lib/carouselPhysics.mjs';
+    import {
+      getHeadingRevealProgress,
+      getProcessRevealTimes,
+      getProcessStepProgress,
+      splitSemanticSentences,
+    } from '../lib/revealTiming.mjs';
 
     (() => {
       const stage = document.querySelector('[data-trsnparent-wheel]');
@@ -778,6 +784,7 @@ const approachCases = [
         });
       }
 
+      const responsiveRevealQuery = matchMedia('(max-width: 820px)');
       const revealGroups = [...document.querySelectorAll('[data-scroll-words]')].map((element) => {
         const characters = splitText(element, true);
         const groupDelay = Number(element.dataset.scrollDelay || 0);
@@ -799,32 +806,46 @@ const approachCases = [
 
       const processSection = document.querySelector('.homepage-process');
       const processSteps = [...processSection.querySelectorAll('[data-process-step]')];
-      const responsiveProcessQuery = matchMedia('(max-width: 820px)');
-      const PROCESS_REVEAL_DURATION_MS = 600;
-      const PROCESS_PARAGRAPH_DELAY_MS = 120;
-      const PROCESS_STEP_STARTS = [0, .16, .32, .66];
-      const PROCESS_STEP_WINDOWS = [.62, .62, .62, .34];
-      const RESPONSIVE_PROCESS_STEP_STARTS = [0, .25, .5, .75];
-      const RESPONSIVE_PROCESS_STEP_WINDOWS = [.25, .25, .25, .25];
+      const PROCESS_REVEAL_DURATION_MS = 650;
+      const splitProcessParagraph = (paragraph) => {
+        const label = paragraph.textContent.trim();
+        const sentences = splitSemanticSentences(label);
+        const fragment = document.createDocumentFragment();
+        paragraph.setAttribute('aria-label', label);
+        sentences.forEach((sentence, index) => {
+          const span = document.createElement('span');
+          span.className = 'process-sentence';
+          span.setAttribute('aria-hidden', 'true');
+          span.textContent = `${sentence}${index < sentences.length - 1 ? ' ' : ''}`;
+          fragment.append(span);
+        });
+        paragraph.replaceChildren(fragment);
+        return [...paragraph.querySelectorAll('.process-sentence')];
+      };
       const processAnimations = processSteps.map((step) => {
-        const keyframes = [
+        const headingKeyframes = [
           { opacity: 0, transform: 'translate3d(0, 18px, 0)' },
           { opacity: 1, transform: 'translate3d(0, 0, 0)' },
         ];
-        const heading = step.querySelector('h3').animate(keyframes, {
+        const heading = step.querySelector('h3').animate(headingKeyframes, {
           duration: PROCESS_REVEAL_DURATION_MS,
-          easing: 'cubic-bezier(.22, 1, .36, 1)',
-          fill: 'both',
-        });
-        const paragraph = step.querySelector('p').animate(keyframes, {
-          duration: PROCESS_REVEAL_DURATION_MS,
-          delay: PROCESS_PARAGRAPH_DELAY_MS,
           easing: 'cubic-bezier(.22, 1, .36, 1)',
           fill: 'both',
         });
         heading.pause();
-        paragraph.pause();
-        return { step, heading, paragraph };
+        const sentences = splitProcessParagraph(step.querySelector('p')).map((sentence) => {
+          const animation = sentence.animate([
+            { opacity: 0, filter: 'blur(7px)' },
+            { opacity: 1, filter: 'blur(0)' },
+          ], {
+            duration: PROCESS_REVEAL_DURATION_MS,
+            easing: 'cubic-bezier(.22, 1, .36, 1)',
+            fill: 'both',
+          });
+          animation.pause();
+          return animation;
+        });
+        return { step, heading, sentences };
       });
 
       let revealFrame = 0;
@@ -832,28 +853,37 @@ const approachCases = [
         revealFrame = 0;
         revealGroups.forEach(({ element, animations, duration }) => {
           const bounds = element.getBoundingClientRect();
-          const progress = reduceMotionQuery.matches ? 1 : Math.min(1, Math.max(0, ((innerHeight * .8) - bounds.top) / bounds.height));
+          const progress = getHeadingRevealProgress({
+            top: bounds.top,
+            height: bounds.height,
+            viewportHeight: innerHeight,
+            isMobile: responsiveRevealQuery.matches,
+            reducedMotion: reduceMotionQuery.matches,
+          });
+          element.dataset.revealProgress = progress.toFixed(4);
           animations.forEach((animation) => { animation.currentTime = progress * duration; });
         });
-        const bounds = processSection.getBoundingClientRect();
-        const processStartLine = innerHeight * .85;
-        const processEndLine = innerHeight * .9;
-        const scrollSpan = Math.max(1, bounds.height + processStartLine - processEndLine);
-        const sectionProgress = reduceMotionQuery.matches
-          ? 1
-          : Math.min(1, Math.max(0, (processStartLine - bounds.top) / scrollSpan));
-        processSection.dataset.processProgress = sectionProgress.toFixed(4);
-        processAnimations.forEach(({ step, heading, paragraph }, stepIndex) => {
-          const stepStarts = responsiveProcessQuery.matches ? RESPONSIVE_PROCESS_STEP_STARTS : PROCESS_STEP_STARTS;
-          const stepWindows = responsiveProcessQuery.matches ? RESPONSIVE_PROCESS_STEP_WINDOWS : PROCESS_STEP_WINDOWS;
-          const stepStart = stepStarts[stepIndex];
-          const stepWindow = stepWindows[stepIndex];
-          const stepProgress = Math.min(1, Math.max(0, (sectionProgress - stepStart) / stepWindow));
-          const currentTime = stepProgress * (PROCESS_REVEAL_DURATION_MS + PROCESS_PARAGRAPH_DELAY_MS);
+        let combinedProcessProgress = 0;
+        processAnimations.forEach(({ step, heading, sentences }, stepIndex) => {
+          const stepProgress = getProcessStepProgress({
+            top: step.getBoundingClientRect().top,
+            viewportHeight: innerHeight,
+            isMobile: responsiveRevealQuery.matches,
+            stepIndex,
+            reducedMotion: reduceMotionQuery.matches,
+          });
+          const revealTimes = getProcessRevealTimes({
+            progress: stepProgress,
+            sentenceCount: sentences.length,
+          });
           step.dataset.revealProgress = stepProgress.toFixed(4);
-          heading.currentTime = currentTime;
-          paragraph.currentTime = currentTime;
+          heading.currentTime = revealTimes.headingTime;
+          sentences.forEach((animation, sentenceIndex) => {
+            animation.currentTime = revealTimes.sentenceTimes[sentenceIndex];
+          });
+          combinedProcessProgress += stepProgress;
         });
+        processSection.dataset.processProgress = (combinedProcessProgress / Math.max(1, processAnimations.length)).toFixed(4);
       };
       const scheduleRevealUpdate = () => {
         if (!revealFrame) revealFrame = requestAnimationFrame(updateReveals);
@@ -861,12 +891,14 @@ const approachCases = [
       addEventListener('scroll', scheduleRevealUpdate, { passive: true });
       addEventListener('resize', scheduleRevealUpdate, { passive: true });
       reduceMotionQuery.addEventListener?.('change', scheduleRevealUpdate);
+      responsiveRevealQuery.addEventListener?.('change', scheduleRevealUpdate);
       updateReveals();
       addEventListener('pagehide', () => {
         cancelAnimationFrame(revealFrame);
         removeEventListener('scroll', scheduleRevealUpdate);
         removeEventListener('resize', scheduleRevealUpdate);
         reduceMotionQuery.removeEventListener?.('change', scheduleRevealUpdate);
+        responsiveRevealQuery.removeEventListener?.('change', scheduleRevealUpdate);
       }, { once: true });
     })();
 
