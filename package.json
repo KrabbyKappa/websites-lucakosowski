@@ -8,6 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "test:carousel": "node --test tests/carousel-physics.test.mjs",
+    "test:presentation": "node --test tests/homepage-presentation.test.mjs",
     "test:reveal": "node --test tests/reveal-timing.test.mjs",
     "verify": "python3 verify_websites_subdomain_site.py"
   },

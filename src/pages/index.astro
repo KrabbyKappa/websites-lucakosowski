@@ -65,7 +65,7 @@ const approachCases = [
       {
         key: 'context',
         title: 'Brand-specific voice',
-        text: 'Copy sounds written for this firm, not dropped into a theme.',
+        text: 'The wording feels specific to this firm, not borrowed from a generic template.',
         image: '/assets/approach-bizwholistic/bizwholistic-about-context.jpg',
         alt: 'Bizwholistic About page explaining the company and its perspective.',
       },
@@ -85,10 +85,10 @@ const approachCases = [
       },
       {
         key: 'graphics',
-        title: 'Handcrafted SVGs',
-        text: 'Custom globe and compass line art make the About page feel drawn for the brand.',
-        image: '/assets/approach-bizwholistic/bizwholistic-about-svg-elements.jpg',
-        alt: 'Bizwholistic page showing custom globe and compass illustrations.',
+        title: 'Multilingual delivery',
+        text: 'A Polish version at the same page position shows that the design and its custom illustrations remain composed across languages.',
+        image: '/assets/approach-bizwholistic/bizwholistic-about-polish-svg-elements.png',
+        alt: 'Polish Bizwholistic About page showing the globe and compass illustrations at the matching page position.',
       },
       {
         key: 'mobile',
@@ -685,10 +685,11 @@ const approachCases = [
     (() => {
       const reduceMotionQuery = matchMedia('(prefers-reduced-motion: reduce)');
 
-      const header = document.querySelector('[data-materialized-header]:not([data-floating-header])');
+      const header = document.querySelector('[data-materialized-header]');
       const hero = document.querySelector('.portfolio-hero');
       if (header && hero) {
         const approach = document.querySelector('.homepage-approach');
+        const approachIntro = document.querySelector('.homepage-approach__intro');
         const process = document.querySelector('.homepage-process');
         const contact = document.querySelector('.homepage-contact');
         const page = document.querySelector('.bsp-rebuild-home');
@@ -704,16 +705,20 @@ const approachCases = [
           const progress = Math.min(1, Math.max(0, rawProgress));
           header.style.setProperty('--header-progress', String(progress));
           header.toggleAttribute('inert', progress < INERT_THRESHOLD);
-          const headerLine = header.getBoundingClientRect().height / 2;
-          const approachBounds = approach?.getBoundingClientRect();
-          const processBounds = process?.getBoundingClientRect();
-          const contactBounds = contact?.getBoundingClientRect();
+          const headerBounds = header.getBoundingClientRect();
+          const headerLine = headerBounds.top + headerBounds.height / 2;
+          const isHeaderLineWithin = (element, line) => {
+            const bounds = element?.getBoundingClientRect();
+            return Boolean(bounds && bounds.top <= line && bounds.bottom >= line);
+          };
+          const overHero = isHeaderLineWithin(hero, headerLine);
+          const overApproachIntro = isHeaderLineWithin(approachIntro, headerLine);
           const overDarkApproach = approach?.dataset.activeCase === 'novatrade'
-            && approachBounds.top <= headerLine && approachBounds.bottom >= headerLine;
-          const overContact = contactBounds?.top <= headerLine && contactBounds.bottom >= headerLine;
+            && isHeaderLineWithin(approach, headerLine);
+          const overContact = isHeaderLineWithin(contact, headerLine);
           const overDarkProcess = page?.dataset.activeCase === 'novatrade'
-            && processBounds?.top <= headerLine && processBounds.bottom >= headerLine;
-          header.dataset.onDark = String(overDarkApproach || overDarkProcess || overContact);
+            && isHeaderLineWithin(process, headerLine);
+          header.dataset.onDark = String(overHero || overApproachIntro || overDarkApproach || overDarkProcess || overContact);
         };
         const scheduleHeaderUpdate = () => {
           if (!headerFrame) headerFrame = requestAnimationFrame(updateHeader);

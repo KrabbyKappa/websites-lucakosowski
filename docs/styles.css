@@ -4460,6 +4460,23 @@ body.website-check-document {
   color: var(--rebuild-ink);
 }
 
+.bsp-rebuild-home [data-floating-header].showcase-topbar[data-on-dark="true"] {
+  border-color: rgba(255,255,255,.22);
+  color: #fff;
+}
+
+.bsp-rebuild-home [data-floating-header].showcase-topbar[data-on-dark="true"] .identity,
+.bsp-rebuild-home [data-floating-header].showcase-topbar[data-on-dark="true"] nav a {
+  color: #fff;
+}
+
+.bsp-rebuild-home [data-floating-header].showcase-topbar[data-on-dark="true"] nav a:hover,
+.bsp-rebuild-home [data-floating-header].showcase-topbar[data-on-dark="true"] nav a:focus-visible,
+.bsp-rebuild-home [data-floating-header].showcase-topbar[data-on-dark="true"] nav a[aria-current="page"] {
+  border-color: #fff;
+  color: #fff;
+}
+
 @media (max-width: 700px) {
   .bsp-rebuild-home [data-floating-header].showcase-topbar {
     inset: auto 22px 28px;
